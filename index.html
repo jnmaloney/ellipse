@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Ellipse</title>
+        <style>* {padding: 0; margin: 50}</style>
+    </head>
+    <body>
+        <center>
+        <canvas id="myCanvas" width="600" height="500"></canvas>
+        <div>
+        <form>
+          a:<input type="number" id="a" min="50" max="150" value="100" onchange="Draw();">
+          b:<input type="number" id="b" min="50" max="150" value="100" onchange="Draw();">
+        </form>
+        </div>
+        <script>
+        var a = 150,
+            b = 150,
+            p = 0;
+
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d');
+        Draw();
+
+        function Draw() {
+            a = document.getElementById('a').value;
+            b = document.getElementById('b').value;
+            var arc_a_x = 0,
+                arc_a_y = 0,
+                arc_b_x = 0,
+                arc_b_y = 0,
+                normal_a_x = 0,
+                normal_a_y = 0,
+                normal_b_x = 0,
+                normal_b_y = 0;
+            var n = 32;
+            var w = 9/a;
+            var cx = canvas.width/2;
+            var cy = canvas.height/2;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < n; ++i) {
+                var t_a = 2.0 * Math.PI * i / n;
+                var t_b = 2.0 * Math.PI * (i+1) / n;
+                arc_a_x = a * Math.cos(t_a) + cx;
+                arc_a_y = b * Math.sin(t_a) + cy;
+                arc_b_x = a * Math.cos(t_b) + cx;
+                arc_b_y = b * Math.sin(t_b) + cy;
+                normal_a_x = a*w*Math.cos(t_a);
+                normal_a_y = b*w*Math.sin(t_a);
+                normal_b_x = a*w*Math.cos(t_b);
+                normal_b_y = b*w*Math.sin(t_b);
+                ctx.beginPath();
+                ctx.moveTo(arc_a_x - normal_a_x, arc_a_y - normal_a_y);
+                ctx.lineTo(arc_b_x - normal_b_x, arc_b_y - normal_b_y);
+                ctx.lineTo(arc_b_x + normal_b_x, arc_b_y + normal_b_y);
+                ctx.lineTo(arc_a_x + normal_a_x, arc_a_y + normal_a_y);
+                ctx.closePath();
+                ctx.stroke();
+            }
+        }
+        </script>
+        </center>
+    </body>
+</html>
